@@ -1,4 +1,4 @@
-import express, { request, response } from 'express';
+import express from 'express';
 
 const usersTable = [
     {
@@ -37,6 +37,7 @@ const products = [
 const app = express();
 
 app.use(express.json());
+app.use(express.static('./assets'));
 
 app.get('/', (request, response) => {
     response.status(200).json({
@@ -51,9 +52,10 @@ app.get('/products', (request, response) => {
 			message: 'Get all products success'
 		});
 	} else {
-		response.status(403).json({
-			message: 'Fobidden'
-		});
+		// response.status(403).json({
+        //     message: 'Forbidden'
+        // });
+        response.status(404).send();
 	}
 });
 
@@ -102,6 +104,8 @@ app.put('/users', (request, response) => {
 
 app.delete('/users/:id', (request, response) => {
     // usersTable[request.params.id].isActive = false;
+
+    // Eliminación del item del array
     usersTable.splice(request.params.id, 1);
     response.status(200).json({
         message: 'User deleted successfully',
